@@ -1,5 +1,10 @@
+import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import "./App.css";
 import headerStyle from "./assets/styles/header.module.css";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import ErrorPage from "./pages/ErrorPage";
 /* Layout 컴포넌트
 1. 모든 <Link/> 요소의 클래스명은 "header-link" 입니다.
 2. /home으로 라우팅할 수 있는 <Link/>를 선언하세요.
@@ -15,10 +20,24 @@ function Layout() {
       <header className={headerStyle.header}>
         <div>Router Practice</div>
         <div className={headerStyle.headerLinks}>
-          {/* 여기에 Link 컴포넌트를 할당하세요. */}
+          <Link className="header-link" to="/home">
+            home
+          </Link>
+          <Link className="header-link" to="/about">
+            about
+          </Link>
+          <Link className="header-link" to="/contact">
+            contact
+          </Link>
+          <Link
+            className="header-link"
+            to={`/${Math.random().toString(10).slice(2)}`}
+          >
+            error
+          </Link>
         </div>
       </header>
-      {/* 이곳에 Outlet을 할당하세요. */}
+      <Outlet />
     </>
   );
 }
@@ -33,7 +52,21 @@ function Layout() {
 7. /* 모든 잘못된 라우팅에서 보이는 <ErrorPage/> 컴포넌트를 라우팅에 연결하세요.
 */
 function App() {
-  return <></>;
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
